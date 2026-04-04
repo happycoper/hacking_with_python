@@ -1,0 +1,15 @@
+#funktionale ??
+
+def add(x,y):
+    print("<>add")
+    return x + y
+
+def sub(x,y):
+    print("<>sub")
+    return x - y
+
+def myfunc(x,y, func):
+    return func(x,y)
+
+print(myfunc(4,3, add))
+print(myfunc(0,1, sub))

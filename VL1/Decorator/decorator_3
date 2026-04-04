@@ -1,0 +1,39 @@
+# Aufbau eines "Decorator"
+import time
+
+def add(x,y):
+    print("<>add")
+    return x + y
+
+def sub(x,y):
+    print("<>sub")
+    return x - y
+
+# Struktur Decorator
+def decorate_print(func):
+    def inner(*args,**kwargs):
+        print("->decorate_print")
+        val = func(*args,**kwargs)
+        print("<-decorate_print")
+        return val
+    return inner
+
+
+def decorate_time(func):
+    def inner(*args,**kwargs):
+        print("->decorate_time")
+        start = time.time()
+        val = func(*args,**kwargs)
+        end = time.time()
+        print(f"<-decorate_time: {end-start}")
+        return val
+    return inner
+
+theAdd1 = decorate_time(add) #das hier sind pointer auf eine funktion
+theAdd =decorate_print(theAdd1)
+
+theSub1 = decorate_time(sub) #das hier sind pointer auf eine funktion
+theSub =decorate_print(theSub1)
+
+print(theAdd(3,4))
+print(theSub(2,8))

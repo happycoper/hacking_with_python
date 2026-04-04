@@ -1,0 +1,11 @@
+def myfunk(*args, **kwargs): 
+    print(len(args))
+    print(len(kwargs))
+
+    for i in args:
+        print(i)
+
+    for key, val in kwargs.items():
+        print(f"kwargs - {key} - {val}")
+
+myfunk(3,4,5,[4,3],2,1,3,"test", first=3, second="str")
