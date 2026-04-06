@@ -1,8 +1,9 @@
 # main programm
-from Vorlesung.VL2 import app
+from VL2 import app
 
 if __name__ == "__main__":
     app.run(debug=True)
     
 
-# python -m Vorlesung.VL2.app
+# Starten vom Projekt-Root aus mit:
+# python -m VL2.app

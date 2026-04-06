@@ -1,4 +1,4 @@
-from Vorlesung.VL2 import app
+from . import app
 from flask import render_template, request
 
 @app.route('/') #decorator
