@@ -1,36 +1,37 @@
 {% extends 'base.html' %}
 
 {% block titel %}
-Register page
+Register
 {% endblock %}
 
 {% block content %}
-<h2>Sie möchten sich registrieren?</h2>
-<p>Bitte füllen Sie das Formular aus, um sich zu registrieren.</p>
-<p>Wir freuen uns auf Ihre Daten!</p>
+<div class="container mt-4"> 
+  <h2>Registrierung</h2>
+  <p>Bitte das Formular ausfüllen, um sich zu registrieren</p>
+  <p></p>
 
-<form method=""POST">
+<form method="POST">
   <div class="mb-3">
-    <label for=""username" class="form-label">Username</label>
-    <input type="text" class="form-control" id="username" name="username">
+    <label for="username" class="form-label">Username</label>
+    <input type="text" class="form-control" id="username" name="username" required> 
   </div>
 
   <div class="mb-3">
     <label for="email" class="form-label">Email</label>
-    <input type="email" class="form-control" id="email" name="email">
+    <input type="email" class="form-control" id="email" name="email" required> 
   </div>
 
   <div class="mb-3">
     <label for=""password1" class="form-label">Passwort</label>
-    <input type="password" class="form-control" id="password1" name="password1">
+    <input type="password" class="form-control" id="password1" name="password1" required>
   </div>
 
   <div class="mb-3">
     <label for=""password2" class="form-label">Passwort bestätigen</label>
-    <input type="password" class="form-control" id="password2" name="password2">
+    <input type="password" class="form-control" id="password2" name="password2" required>
   </div>
 
-  <button type"submit" class=""btn btn-primary">Registrieren</button>
+  <button type="submit" class="btn btn-primary">Registrieren</button>
 </form>
 
 {% endblock %}
