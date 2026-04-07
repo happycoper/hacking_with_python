@@ -1,19 +1,15 @@
-import mysql.connector
+import sqlite3
+from urllib import response
 from . import app
 from flask import render_template, request, redirect, url_for, make_response
 from pathlib import Path
 
 APP_DIR = Path(__file__).resolve().parent
-DB_CONFIG = {
-"host": "127.0.0.1",
-"user": "admin",
-"password": "admin",
-"database": "db_hwp",
-"port": 3306
-}
+DB_PATH = APP_DIR / "v2.db"
 
-def get_db_connection(): # Verbindung zur Datenbank herstellen
-    conn = mysql.connector.connect(**DB_CONFIG)
+def get_db_connection():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
     return conn
 
 def require_login():
@@ -24,29 +20,26 @@ def require_login():
 
 def init_db(): #erstellung der Tabelle, wenn sie noch nicht existiert
     conn = get_db_connection()
-    cur = conn.cursor(dictionary=True)
+    cur = conn.cursor()
 
     cur.execute(
-    "CREATE TABLE IF NOT EXISTS users ("
-    "id INT AUTO_INCREMENT PRIMARY KEY, "
-    "username VARCHAR(50) NOT NULL UNIQUE, "
-    "email VARCHAR(120) NOT NULL, "
-    "password VARCHAR(255) NOT NULL)"
+        "CREATE TABLE IF NOT EXISTS users ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+        "username TEXT UNIQUE NOT NULL, "
+        "email TEXT NOT NULL, "
+        "password TEXT NOT NULL)"
     )
 
     cur.execute(
-    "CREATE TABLE IF NOT EXISTS items ("
-    "id INT AUTO_INCREMENT PRIMARY KEY, "
-    "title VARCHAR(200) NOT NULL, "
-    "content LONGTEXT NOT NULL, "
-    "priority INT DEFAULT 2, "
-    "created_by VARCHAR(50) NOT NULL)"
+        "CREATE TABLE IF NOT EXISTS items ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+        "title TEXT NOT NULL, "
+        "content TEXT NOT NULL CHECK(LENGTH(content) >= 1024), "
+        "priority INTEGER DEFAULT 2, "
+        "created_by TEXT NOT NULL)"
     )
-
     conn.commit()
-    cur.close()
     conn.close()
-
 
 
 @app.route('/')
@@ -69,16 +62,16 @@ def login():
             return render_template('login.html', message=message)
 
         conn = get_db_connection()
-        cur = conn.cursor(dictionary=True)
+        cur = conn.cursor()
         cur.execute(
-            "SELECT username, password FROM users WHERE username = %s",
+            "SELECT username, password FROM users WHERE username = ?",
             (theuser,)
         )
         user = cur.fetchone()
         conn.close()
 
         # Login nur erfolgreich wenn alle Werte i.O.
-        if user and user[1] == thepass:
+        if user and user["password"] == thepass:
             response = make_response(redirect(url_for('content')))
             response.set_cookie("username", theuser, max_age=3600, httponly=True)
             return response
@@ -93,7 +86,7 @@ def tickets():
     if guard:
         return guard
     conn = get_db_connection()
-    cur = conn.cursor(dictionary=True)
+    cur = conn.cursor()
     cur.execute("SELECT id, title, priority, created_by FROM items ORDER BY id DESC")
     dbitems = cur.fetchall()
     conn.close()
@@ -116,15 +109,15 @@ def register():
             message = "Passwörter stimmen nicht überein"
         else:
             conn = get_db_connection()
-            cur = conn.cursor(dictionary=True)
+            cur = conn.cursor()
             try:
                 cur.execute(
-                    "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)",
+                    "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
                     (theuser, email, thepass1)
                 )
                 conn.commit()
                 return redirect(url_for('login'))
-            except mysql.connector.IntegrityError:
+            except sqlite3.IntegrityError:
                 message = "Username existiert bereits"
             finally:
                 conn.close()
@@ -147,9 +140,9 @@ def ticket_detail(item_id):
         return guard
 
     conn = get_db_connection()
-    cur = conn.cursor(dictionary=True)
+    cur = conn.cursor()
     cur.execute(
-        "SELECT id, title, content, priority, created_by FROM items WHERE id = %s",
+        "SELECT id, title, content, priority, created_by FROM items WHERE id = ?",
         (item_id,)
     )
     item = cur.fetchone()
@@ -179,9 +172,9 @@ def new_item():
             message = "Inhalt muss mindestens 1024 Zeichen haben"
         else:
             conn = get_db_connection()
-            cur = conn.cursor(dictionary=True)
+            cur = conn.cursor()
             cur.execute(
-                "INSERT INTO items (title, content, priority, created_by) VALUES (%s, %s, %s, %s)",
+                "INSERT INTO items (title, content, priority, created_by) VALUES (?, ?, ?, ?)",
                 (title, content, int(priority), created_by)
             )
             conn.commit()
@@ -190,10 +183,13 @@ def new_item():
 
     return render_template('new_item.html', message=message)
 
-
 @app.route('/logout')
 def logout():
-    response = make_response(redirect(url_for('home', logout='1')))
+    response = make_response(redirect(url_for('logout_page')))
     response.delete_cookie("username")
     return response
+
+@app.route('/logout-page')
+def logout_page():
+    return render_template('logout.html', logout_message="Erfolgreich ausgeloggt.")
                

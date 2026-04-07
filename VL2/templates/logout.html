@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
 
 {% block titel %}
-Home sweet Home
+Logout
 {% endblock %}
 
 {% block content %}
+
 <div class="container mt-4"> 
-    <h2>Willkommen Zuhause! </h2>
-    <p>Hier könnte Ihre Werbung stehen</p>
+    <h2>Du wurdest ausgeloggt.</h2> 
+    <p>Bis morgen in alter Frische!</p> 
+    {% if logout_message %} 
+    <div class="alert alert-success">{{ logout_message }}</div> 
+    {% endif %} 
+    <a class="btn btn-primary" href="{{ url_for('login') }}">Zum Login</a> 
+</div> 
 
-    {% if message %}
-    <div class="alert alert-danger">{{ message }}</div>
-    {% endif %}
-
-</div>
 {% endblock %}
