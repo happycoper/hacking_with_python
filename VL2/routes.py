@@ -16,10 +16,10 @@ def login():
 
 @app.route('/tickets')
 def tickets():
-    dbitems = [{"id": 1, "priority": 2, "username": "Mark", "titel": "sth broken"},
-            {"id": 2, "priority": 1, "username": "Nathalie", "titel": "nothing woks"},
-            {"id": 3, "priority": 3, "username": "luke", "titel": "does not looks good"} ]
-    return render_template('tickets.html', Item=dbitems)
+    dbitems = [{"id": 1, "priority": 2, "username": "Mark", "title": "sth broken"},
+            {"id": 2, "priority": 1, "username": "Nathalie", "title": "nothing woks"},
+            {"id": 3, "priority": 3, "username": "luke", "title": "does not looks good"} ]
+    return render_template('tickets.html', items=dbitems)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
