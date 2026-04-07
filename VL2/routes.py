@@ -26,9 +26,11 @@ def register():
    if request.method == 'POST':
        theuser = request.form.get('username')
        email = request.form.get('email')
-       thepass1 = request.form.get('password')
-       thepass2 = request.form.get('password')
+       thepass1 = request.form.get('password1')
+       thepass2 = request.form.get('password2')
+       if thepass1 != thepass2:
+           print("Passwörter stimmen nicht überein")
 
-       print(f"{theuser}, {email}, {thepass1},{thepass2}")
+       print(f"\n Username: {theuser},\n Email: {email},\n Passwort1: {thepass1},\n Passwort2: {thepass2} \n")
    return render_template('register.html')
 
