@@ -5,37 +5,32 @@ Register page
 {% endblock %}
 
 {% block content %}
-Please register
+<h2>Sie möchten sich registrieren?</h2>
+<p>Bitte füllen Sie das Formular aus, um sich zu registrieren.</p>
+<p>Wir freuen uns auf Ihre Daten!</p>
 
-<form>
+<form method=""POST">
   <div class="mb-3">
-    <label for="username" class="form-label">username</label>
-    <input type="username" class="form-control" id="username" aria-describ{% extends 'base.html' %}
+    <label for=""username" class="form-label">Username</label>
+    <input type="text" class="form-control" id="username" name="username">
+  </div>
 
-
-<form method="POST">
   <div class="mb-3">
-    <label for="username" class="form-label">username</label>
-    <input type="username" class="form-control" id="username" aria-describedby="emailHelp">
-    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control" id="email" name="email">
   </div>
-  <div class="mb-3">
-    <label for="password1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="password1">
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
 
-{% endblock %}
-
-edby="emailHelp">
-    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-  </div>
   <div class="mb-3">
-    <label for="password" class="form-label">Password</label>
-    <input type="password" class="form-control" id="password">
+    <label for=""password1" class="form-label">Passwort</label>
+    <input type="password" class="form-control" id="password1" name="password1">
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+
+  <div class="mb-3">
+    <label for=""password2" class="form-label">Passwort bestätigen</label>
+    <input type="password" class="form-control" id="password2" name="password2">
+  </div>
+
+  <button type"submit" class=""btn btn-primary">Registrieren</button>
 </form>
 
 {% endblock %}
