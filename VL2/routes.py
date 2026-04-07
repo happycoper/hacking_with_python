@@ -1,5 +1,30 @@
+import sqlite3
 from . import app
 from flask import render_template, request
+from pathlib import Path
+
+APP_DIR = Path(__file__).resolve().parent
+DB_PATH = APP_DIR /"v2.db"
+
+def get_db_connection():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def init_db():
+    conn =get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        "CREATE TABLE IF NOT EXISTS items ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+        "title TEXT NOT NULL, "
+        "content TEXT NOT NULL, "
+        "created_by TEXT NOT NULL)"
+    )
+    conn.commit()
+    conn.close()
+
+
 
 @app.route('/') #decorator
 def home():
