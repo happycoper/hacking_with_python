@@ -20,8 +20,8 @@ Tickets
     <tr>
       <th scope="row">{{i.id}}</th>
       <td>{{i.priority}}</td>
-      <td>{{i.username}}</td>
-      <td>{{i.title}}</td>
+      <td>{{i.created_by}}</td>
+      <td><a href="{{ url_for('ticket_detail', item_id=i.id) }}">{{ i.title }}</a></td>
     </tr>
     {% endfor %}
     

@@ -7,3 +7,4 @@ if __name__ == "__main__":
 
 # Starten vom Projekt-Root aus mit:
 # python -m VL2.app
+# pip install mysql-connector-python
