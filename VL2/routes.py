@@ -34,7 +34,7 @@ def init_db(): #erstellung der Tabelle, wenn sie noch nicht existiert
         "CREATE TABLE IF NOT EXISTS items ("
         "id INTEGER PRIMARY KEY AUTOINCREMENT, "
         "title TEXT NOT NULL, "
-        "content TEXT NOT NULL CHECK(LENGTH(content) >= 1024), "
+        "content TEXT NOT NULL, "
         "priority INTEGER DEFAULT 2, "
         "created_by TEXT NOT NULL)"
     )
@@ -168,8 +168,8 @@ def new_item():
 
         if not title or not content:
             message = "Titel und Inhalt sind Pflichtfelder"
-        elif len(content) < 1024:
-            message = "Inhalt muss mindestens 1024 Zeichen haben"
+        #elif len(content) < 1024:
+            #message = "Inhalt muss mindestens 1024 Zeichen haben"
         else:
             conn = get_db_connection()
             cur = conn.cursor()
