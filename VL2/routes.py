@@ -59,7 +59,8 @@ def home():
     logout_message = None
     if request.args.get("logout") == "1":
         logout_message = "Erfolgreich ausgeloggt."
-    return render_template("home.html", logout_message=logout_message)
+    username = request.cookies.get("username")
+    return render_template("home.html", logout_message=logout_message, username=username)
 
 
 @app.route("/login", methods=["GET", "POST"])

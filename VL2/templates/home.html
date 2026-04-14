@@ -5,8 +5,12 @@ Home sweet Home
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4"> 
-    <h2>Willkommen bei der Arbeit! </h2>
+<div class="container mt-4">
+    {% if username %}
+    <h2>Willkommen bei der Arbeit, {{ username }}!</h2>
+    {% else %}
+    <h2>Willkommen bei der Arbeit!</h2>
+    {% endif %}
     <p>Wenn Sie eingeloggt sind, können Sie ihre Arbeit starten </p>
 
     {% if logout_message %}
