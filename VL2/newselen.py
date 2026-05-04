@@ -27,12 +27,12 @@ for passw in passwords:
     print(f"Check {len(res)}")
 
     time.sleep(10)
+    
+    res[0].clear()
+    res[0].send_keys("de")
 
-    #res[0].clear()
-    #res[0].send_keys("de")
-
-    #res[1].clear()
-    #res[1].send_keys(passw)
+    res[1].clear()
+    res[1].send_keys(passw)
 
     button = driver.find_elements(By.CLASS_NAME, "btn")
     print(f"Check2 {len(button)}")
