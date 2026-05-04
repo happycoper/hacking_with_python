@@ -84,7 +84,7 @@ def login():
         user = cur.fetchone()
         cur.close()
         conn.close()
-
+    
         if user and user["password"] == thepass:
             response = make_response(redirect(url_for("content")))
             response.set_cookie("username", theuser, max_age=3600, httponly=True)
