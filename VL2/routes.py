@@ -66,27 +66,23 @@ def home():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     message = None
-
-    if request.method == "POST":
-        theuser = request.form.get("username")
-        thepass = request.form.get("password")
+    if request.method == 'POST':
+        theuser = request.form.get('username')
+        thepass = request.form.get('password')
 
         if not theuser or not thepass:
             message = "Bitte Username und Passwort ausfüllen"
-            return render_template("login.html", message=message)
+            return render_template('login.html', message=message)
 
         conn = get_db_connection()
         cur = conn.cursor(dictionary=True)
-        cur.execute(
-            "SELECT username, password FROM users WHERE username = %s",
-            (theuser,),
-        )
+        sql_statement = f"SELECT username, password FROM users WHERE username = '{theuser}' AND password = '{thepass}'"
+        cur.execute(sql_statement)
         user = cur.fetchone()
-        cur.close()
         conn.close()
     
-        if user and user["password"] == thepass:
-            response = make_response(redirect(url_for("content")))
+        if user:
+            response = make_response(redirect(url_for('content')))
             response.set_cookie("username", theuser, max_age=3600, httponly=True)
             return response
         else:
@@ -154,7 +150,19 @@ def content():
         return guard
 
     username = request.cookies.get("username")
-    return render_template("content.html", username=username)
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(f"SELECT username, password FROM users WHERE username = '{username}'")
+    user = cur.fetchone()
+    conn.close()
+
+    if not user:
+        response = make_response(redirect(url_for('logout_page')))
+        response.delete_cookie("username")
+        return response
+
+    return render_template('content.html', username=user[0])
 
 
 @app.route("/tickets/<int:item_id>")
