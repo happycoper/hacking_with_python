@@ -63,36 +63,51 @@ def home():
     return render_template("home.html", logout_message=logout_message, username=username)
 
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     message = None
-
-    if request.method == "POST":
-        theuser = request.form.get("username")
-        thepass = request.form.get("password")
+    if request.method == 'POST':
+        theuser = request.form.get('username')
+        thepass = request.form.get('password')
 
         if not theuser or not thepass:
             message = "Bitte Username und Passwort ausfüllen"
-            return render_template("login.html", message=message)
+            return render_template('login.html', message=message)
 
         conn = get_db_connection()
         cur = conn.cursor(dictionary=True)
-        cur.execute(
-            "SELECT username, password FROM users WHERE username = %s",
-            (theuser,),
-        )
+        # cur.execute(
+        #     "SELECT username, password FROM users WHERE username = %s",
+        #     (theuser,)
+        # )
+        # # cur.execute(f"SELECT username, password FROM users WHERE username = '{theuser}'")
+        # user = cur.fetchone()
+        # conn.close()
+        #
+        # # Login nur erfolgreich wenn alle Werte i.O.
+        # if user and user["password"] == thepass:
+        #     response = make_response(redirect(url_for('content')))
+        #     response.set_cookie("username", theuser, max_age=3600, httponly=True)
+        #     return response
+        # else:
+        #     message = "Login fehlgeschlagen"
+
+        # Musst hier ein paar Sachen umschreiben, da es hier sonst nicht funktionieren würde... (Leider zu sicher :D)
+        cur.execute(f"SELECT username, password FROM users WHERE username = '{theuser}' AND password = '{thepass}'")
         user = cur.fetchone()
-        cur.close()
         conn.close()
-    
-        if user and user["password"] == thepass:
-            response = make_response(redirect(url_for("content")))
+
+        print(user)
+
+        # Login nur erfolgreich wenn alle Werte i.O.
+        if user:
+            response = make_response(redirect(url_for('content')))
             response.set_cookie("username", theuser, max_age=3600, httponly=True)
             return response
         else:
             message = "Login fehlgeschlagen"
 
-    return render_template("login.html", message=message)
+    return render_template('login.html', message=message)
 
 
 @app.route("/tickets")
