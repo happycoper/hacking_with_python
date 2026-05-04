@@ -76,30 +76,11 @@ def login():
 
         conn = get_db_connection()
         cur = conn.cursor(dictionary=True)
-        # cur.execute(
-        #     "SELECT username, password FROM users WHERE username = %s",
-        #     (theuser,)
-        # )
-        # # cur.execute(f"SELECT username, password FROM users WHERE username = '{theuser}'")
-        # user = cur.fetchone()
-        # conn.close()
-        #
-        # # Login nur erfolgreich wenn alle Werte i.O.
-        # if user and user["password"] == thepass:
-        #     response = make_response(redirect(url_for('content')))
-        #     response.set_cookie("username", theuser, max_age=3600, httponly=True)
-        #     return response
-        # else:
-        #     message = "Login fehlgeschlagen"
-
-        # Musst hier ein paar Sachen umschreiben, da es hier sonst nicht funktionieren würde... (Leider zu sicher :D)
-        cur.execute(f"SELECT username, password FROM users WHERE username = '{theuser}' AND password = '{thepass}'")
+        sql_statement = f"SELECT username, password FROM users WHERE username = '{theuser}' AND password = '{thepass}'"
+        cur.execute(sql_statement)
         user = cur.fetchone()
         conn.close()
-
-        print(user)
-
-        # Login nur erfolgreich wenn alle Werte i.O.
+    
         if user:
             response = make_response(redirect(url_for('content')))
             response.set_cookie("username", theuser, max_age=3600, httponly=True)
@@ -169,7 +150,19 @@ def content():
         return guard
 
     username = request.cookies.get("username")
-    return render_template("content.html", username=username)
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(f"SELECT username, password FROM users WHERE username = '{username}'")
+    user = cur.fetchone()
+    conn.close()
+
+    if not user:
+        response = make_response(redirect(url_for('logout_page')))
+        response.delete_cookie("username")
+        return response
+
+    return render_template('content.html', username=user[0])
 
 
 @app.route("/tickets/<int:item_id>")
