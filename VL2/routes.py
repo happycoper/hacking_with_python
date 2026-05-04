@@ -63,7 +63,7 @@ def home():
     return render_template("home.html", logout_message=logout_message, username=username)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     message = None
     if request.method == 'POST':
@@ -88,7 +88,7 @@ def login():
         else:
             message = "Login fehlgeschlagen"
 
-    return render_template('login.html', message=message)
+    return render_template("login.html", message=message)
 
 
 @app.route("/tickets")
@@ -143,12 +143,11 @@ def register():
     return render_template("register.html", message=message)
 
 
-@app.route("/content")
+@app.route('/content')
 def content():
     guard = require_login()
     if guard:
         return guard
-
     username = request.cookies.get("username")
 
     conn = get_db_connection()
@@ -163,6 +162,7 @@ def content():
         return response
 
     return render_template('content.html', username=user[0])
+ 
 
 
 @app.route("/tickets/<int:item_id>")
