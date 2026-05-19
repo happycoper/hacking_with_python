@@ -17,7 +17,7 @@ driver.get(website)
 
 # wordlist verwenden - da hardware hier sehr begrenzt, wird wordlist mit array simuliert 
 passwords = ["1234", "password", "de", "password2026", "admin"]
-username = "admin"
+username = "de"
 for passw in passwords:
     driver.get(website)
     time.sleep(5)

