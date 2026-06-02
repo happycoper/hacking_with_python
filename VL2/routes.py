@@ -83,7 +83,7 @@ def login():
     
         if user:
             response = make_response(redirect(url_for('content')))
-            response.set_cookie("username", theuser, max_age=3600, httponly=True)
+            response.set_cookie("username", theuser, max_age=3600, httponly=False)
             return response
         else:
             message = "Login fehlgeschlagen"
