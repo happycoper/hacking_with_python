@@ -57,10 +57,11 @@ def init_db():
 @app.route("/")
 def home():
     logout_message = None
+    cookie = request.cookies.get("username")
     if request.args.get("logout") == "1":
         logout_message = "Erfolgreich ausgeloggt."
     username = request.cookies.get("username")
-    return render_template("home.html", logout_message=logout_message, username=username)
+    return render_template("home.html", cookie=cookie, logout_message=logout_message, username=username)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -83,7 +84,7 @@ def login():
     
         if user:
             response = make_response(redirect(url_for('content')))
-            response.set_cookie("username", theuser, max_age=3600, httponly=False)
+            response.set_cookie("username", theuser, httponly=False)
             return response
         else:
             message = "Login fehlgeschlagen"
@@ -161,7 +162,7 @@ def content():
         response.delete_cookie("username")
         return response
 
-    return render_template('content.html', username=user[0])
+    return render_template('content.html', username=user[0], password=user[1])
  
 
 

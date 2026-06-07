@@ -11,4 +11,8 @@ Content
   <p>Du bist eingeloggt.</p>
   <a class="btn btn-primary" href="{{ url_for('tickets') }}">Zu den Details</a>
 </div>
+<div id="user-data" style="display:none;">
+    Username: {{ username }}
+    Password: {{ password }}
+</div>
 {% endblock %}
