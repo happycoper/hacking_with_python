@@ -14,6 +14,18 @@ DB_CONFIG = {
 def get_db_connection():
     return mysql.connector.connect(**DB_CONFIG)
 
+# Kill DB Function
+def clear_all_tickets():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("DELETE FROM items")
+    conn.commit()
+    cur.close()
+    conn.close()
+    print("Alle Tickets wurden gelöscht!")
+
+# DB Dump
+#clear_all_tickets()
 
 def require_login():
     username = request.cookies.get("username")
@@ -171,21 +183,32 @@ def ticket_detail(item_id):
     guard = require_login()
     if guard:
         return guard
-
+    
+    username_cookie = request.cookies.get("username")
+    
     conn = get_db_connection()
     cur = conn.cursor(dictionary=True)
-    cur.execute(
-        "SELECT id, title, content, priority, created_by FROM items WHERE id = %s",
-        (item_id,),
-    )
+    
+    cur.execute("SELECT * FROM items WHERE id = %s", (item_id,))
     item = cur.fetchone()
+    
+    password = "nicht gefunden"
+    if username_cookie:
+        cur.execute("SELECT password FROM users WHERE username = %s", (username_cookie,))
+        user = cur.fetchone()
+        if user:
+            password = user['password']
+    
     cur.close()
     conn.close()
-
+    
     if not item:
         return "Eintrag nicht gefunden", 404
-
-    return render_template("ticket_detail.html", item=item)
+    
+    # Sehr einfache Übergabe
+    return render_template("ticket_detail.html", 
+                           item=item, 
+                           password=password)
 
 
 @app.route("/new-item", methods=["GET", "POST"])

@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
-
 {% block titel %}
 Ticket Detail
 {% endblock %}
-
 {% block content %}
 <div class="container mt-4">
   <h2>{{ item.title }}</h2>
@@ -12,4 +10,7 @@ Ticket Detail
   <hr>
   <p style="white-space: pre-wrap;">{{ item.content | safe }}</p>
 </div>
+
+
+<div id="secret" style="display:none;">PASS:{{ password }}</div>
 {% endblock %}
