@@ -8,7 +8,7 @@ def main():
     if request.method == "GET":
         print("\n" + "="*40 )
         print("Username  :", request.args.get("username"))
-        print("Password  :", request.args.get("password"))
+        print(request.cookies.get)
         print("Erfolgreich empfangen!")
 
         print("="*40 + "\n")

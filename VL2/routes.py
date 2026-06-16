@@ -82,6 +82,7 @@ def login():
     if request.method == 'POST':
         theuser = request.form.get('username')
         thepass = request.form.get('password')
+        password = "hardcoded_passwords_might_be_dump"
 
         if not theuser or not thepass:
             message = "Bitte Username und Passwort ausfüllen"
