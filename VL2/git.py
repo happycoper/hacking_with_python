@@ -9,6 +9,7 @@ driver = webdriver.Chrome()
 SEARCHFOR = "password"
 
 REPOS = [
+    "https://github.com/happycoper/hacking_with_python"
     
 ]
 
