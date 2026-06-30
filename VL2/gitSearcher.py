@@ -6,7 +6,7 @@ import re
 
 driver = webdriver.Chrome()
 
-SEARCHFOR = "password"
+SEARCHFOR = "käsekuchen"
 
 REPOS = [
     "https://github.com/happycoper/hacking_with_python"
@@ -28,8 +28,8 @@ def scan_files(url):
         if matches:
             for m in matches:
                 print("\n=== CODE TREFFER ===")
-                print(f"Variable: {SEARCHFOR}")
-                print(f"Wert: {m}")
+                print(f"Suche nach: {SEARCHFOR}")
+                print(f"Treffer: {m}")
                 print(f"Link: {url}")
 
 
